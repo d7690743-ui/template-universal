@@ -35,5 +35,5 @@ gradlew / gradle/wrapper/      # wrapper Gradle 8.9
 ## Requisito de versiones del workflow
 
 - `actions/checkout@v5`, `actions/setup-node@v4` (Node 24),
-  `actions/setup-java@v5` (Java 17 Temurin), `android-actions/setup-android@v3`,
+  `actions/setup-java@v5` (Java 17 Temurin), `android-actions/setup-android@v5`,
   `actions/setup-python@v5` (Python 3.11). Sin `hashFiles`.
