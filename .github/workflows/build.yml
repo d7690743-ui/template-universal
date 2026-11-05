@@ -1,0 +1,62 @@
+name: Build universal (APK / EXE)
+
+on:
+  push:
+    branches: [main, master, maestro]
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Que construir'
+        required: true
+        default: 'apk'
+        type: choice
+        options: [apk, exe, both]
+
+jobs:
+  build-apk:
+    if: ${{ github.event_name == 'push' || github.event.inputs.target == 'apk' || github.event.inputs.target == 'both' }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v5
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
+
+  build-exe:
+    if: ${{ github.event.inputs.target == 'exe' || github.event.inputs.target == 'both' }}
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyinstaller
+      - name: Build EXE
+        run: pyinstaller --onefile app/main.py
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: exe
+          path: dist/*.exe

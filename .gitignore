@@ -1,0 +1,16 @@
+# Android / Gradle
+.gradle/
+build/
+app/build/
+local.properties
+.idea/
+*.iml
+.DS_Store
+
+# Python / PyInstaller (EXE)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+dist/
+*.spec
