@@ -20,10 +20,32 @@ Regla del template:
   - `exe`: solo EXE (Windows).
   - `both`: APK + EXE.
 
+## Cómo compartir (Release público)
+
+Los Artifacts de Actions no sirven para compartir: solo los ves tú
+logueado y se borran en 90 días. Para pasarle la app a cualquiera
+usa el Release público:
+
+1. Ve a Actions → `Release APK/EXE` → `Run workflow`.
+2. Pon el tag, ej: `v1.0.0`, y dale `Run`.
+3. Espera a que termine (compila APK + EXE).
+4. Ve a la pestaña `Releases` (al lado de Código).
+5. Ahí aparecen `app-debug.apk` y `app.exe` como assets.
+6. Clic derecho → copiar link, queda así:
+
+```text
+https://github.com/TU-USUARIO/TU-REPO/releases/download/v1.0.0/app.exe
+https://github.com/TU-USUARIO/TU-REPO/releases/download/v1.0.0/app-debug.apk
+```
+
+Ese link lo puedes pasar por WhatsApp, PC, amigos o tu página.
+No necesitan tener GitHub y no caduca.
+
 ## Estructura
 
 ```text
 .github/workflows/build.yml   # target: apk | exe | both (default apk)
+.github/workflows/release.yml  # tag: v1.0.0 -> APK + EXE como Release público
 app/build.gradle               # módulo Android
 app/src/main/                  # Android: Manifest, Kotlin, res
 app/main.py                    # Python: entrada del EXE
